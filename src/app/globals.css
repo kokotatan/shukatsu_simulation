@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Serif+JP:wght@300;400;500&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg: #080a0c;
+  --bg-soft: #0f1214;
+  --bg-card: #141820;
+  --bg-border: #1e2428;
+  --cream: #ddd8c8;
+  --cream-dim: #9a9488;
+  --cream-muted: #606870;
+  --gold: #c8a848;
+  --gold-light: #d4b85a;
+  --char-color: #c8a848;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--cream);
+  font-family: 'DotGothic16', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-border);
+  border-radius: 2px;
+}
+
+.font-serif-jp {
+  font-family: 'Noto Serif JP', serif;
+}
+
+.cursor::after {
+  content: '▮';
+  animation: blink 1s step-end infinite;
+  color: var(--gold);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* スキャンライン効果 */
+.scanlines::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* キャラクターテーマカラー */
+.char-misaki  { --char-color: #4a90d9; }
+.char-shota   { --char-color: #e8873a; }
+.char-aoi     { --char-color: #9b6bb5; }
+.char-takumi  { --char-color: #d4433a; }
+.char-kenta   { --char-color: #5aaa6e; }
+.char-ren     { --char-color: #3a7fb5; }
+.char-sakura  { --char-color: #d4836e; }
+.char-yuto    { --char-color: #6bbfbf; }
+.char-daiki   { --char-color: #c8a848; }
+.char-hikari  { --char-color: #d4a0c8; }
+
+/* アニメーション */
+@keyframes float-up {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-40px) scale(1.4); }
+}
+
+.emotion-float {
+  animation: float-up 0.6s ease-out forwards;
+  pointer-events: none;
+  position: absolute;
+}
