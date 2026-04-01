@@ -729,7 +729,8 @@ export const hikariScenario: Scenario = {
       choices: [
         {
           label: '面接を終える',
-          nextSceneId: 'hikari_ending_a',
+          offerCountDelta: 1,
+          nextSceneId: (stats: import('@/types').GameStats) => (stats.axis >= 60 && stats.mental >= 50 ? 'hikari_ending_a' : 'hikari_ending_b'),
           effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 10 }],
         },
       ],

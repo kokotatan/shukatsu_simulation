@@ -438,6 +438,7 @@ export const yutoScenario: Scenario = {
         {
           label: 'メーカー研究職の内定を承諾する',
           sub: '「俺の軸は、最初からここにあった」',
+          offerCountDelta: 2,
           nextSceneId: 'yuto_ending_a_prep',
           effects: [{ key: 'axis', delta: 20 }, { key: 'mental', delta: 10 }],
         },
@@ -445,6 +446,7 @@ export const yutoScenario: Scenario = {
           label: '外資コンサルの内定を承諾する',
           sub: '「新しい自分を試してみる」',
           danger: true,
+          offerCountDelta: 2,
           nextSceneId: 'yuto_ending_b_prep',
           effects: [{ key: 'axis', delta: -15 }, { key: 'stress', delta: 15 }],
         },

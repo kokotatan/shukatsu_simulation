@@ -287,7 +287,6 @@ export const renScenario: Scenario = {
       ],
       choices: [
         {
-          speaker: '蓮',
           label: '「少し時間をください」と答える',
           nextSceneId: 'ren_apr_es_writing',
           effects: [{ key: 'stress', delta: 10 }, { key: 'mental', delta: 3 }],
@@ -678,7 +677,8 @@ export const renScenario: Scenario = {
       dialogs: [],
       choices: [
         {
-          label: 'エンディングへ',
+          label: '結果、内定通知',
+          offerCountDelta: 1,
           nextSceneId: 'ren_ending_a',
           effects: [{ key: 'axis', delta: 5 }],
         },
@@ -705,7 +705,7 @@ export const renScenario: Scenario = {
       ],
       choices: [
         {
-          label: 'エンディングへ',
+          label: '結果',
           nextSceneId: 'ren_ending_b',
           effects: [{ key: 'axis', delta: 3 }],
         },
@@ -732,7 +732,8 @@ export const renScenario: Scenario = {
       ],
       choices: [
         {
-          label: 'エンディングへ',
+          label: 'お祈りメールを見る',
+          rejectCountDelta: 1,
           nextSceneId: 'ren_ending_c',
           effects: [{ key: 'stress', delta: 10 }, { key: 'mental', delta: -5 }],
         },

@@ -670,13 +670,9 @@ export const aoiScenario: Scenario = {
       ],
       choices: [
         {
-          label: '（axis が高い場合のルート）→ 中小企業支援コンサルから内定',
-          nextSceneId: 'aoi_ending_a',
-          effects: [],
-        },
-        {
-          label: '（axis が低い場合のルート）→ 大手コンサルから内定',
-          nextSceneId: 'aoi_ending_b',
+          label: '電話を受ける',
+          offerCountDelta: 1,
+          nextSceneId: (stats: import('@/types').GameStats) => (stats.axis >= 60 ? 'aoi_ending_a' : 'aoi_ending_b'),
           effects: [],
         },
       ],

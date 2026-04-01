@@ -1074,8 +1074,9 @@ export const misakiScenario: Scenario = {
       ],
       choices: [
         {
-          label: '面接を終えて、結果を待つ',
-          nextSceneId: 'misaki_ending_a',
+          label: '結果を待つ',
+          offerCountDelta: 1,
+          nextSceneId: (stats: import('@/types').GameStats) => (stats.stress >= 80 ? 'misaki_ending_c' : 'misaki_ending_a'),
           effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 10 }],
         },
       ],
@@ -1100,7 +1101,8 @@ export const misakiScenario: Scenario = {
       choices: [
         {
           label: '結果を待つ',
-          nextSceneId: 'misaki_ending_b',
+          offerCountDelta: 1,
+          nextSceneId: (stats: import('@/types').GameStats) => (stats.stress >= 80 ? 'misaki_ending_c' : 'misaki_ending_b'),
           effects: [{ key: 'stress', delta: 8 }],
         },
       ],

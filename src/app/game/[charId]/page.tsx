@@ -20,6 +20,8 @@ export default function GamePage({ params }: { params: Promise<{ charId: string 
     applyStatEffects,
     setEnding,
     phase,
+    recordOffer,
+    recordReject
   } = useGameStore()
 
   const char = getCharacter(charIdParam)
@@ -52,13 +54,34 @@ export default function GamePage({ params }: { params: Promise<{ charId: string 
   if (!char || !scenario || !scene) return null
 
   const handleChoice = (
-    nextSceneId: string,
+    nextSceneId: string | ((stats: import('@/types').GameStats) => string),
     effects: StatEffect[],
-    cost?: number
+    cost?: number,
+    offerCountDelta?: number,
+    rejectCountDelta?: number
   ) => {
     const allEffects: StatEffect[] = [...effects]
     if (cost) allEffects.push({ key: 'money', delta: -cost })
-    goToScene(nextSceneId, allEffects)
+
+    const currentStats = useGameStore.getState().stats
+    const expectedStats = { ...currentStats }
+    for (const effect of allEffects) {
+      if (effect.key === 'money') {
+        expectedStats.money = Math.max(0, expectedStats.money + effect.delta)
+      } else {
+        expectedStats[effect.key] = Math.max(0, Math.min(100, expectedStats[effect.key] + effect.delta))
+      }
+    }
+
+    if (offerCountDelta) {
+      for (let i = 0; i < offerCountDelta; i++) recordOffer()
+    }
+    if (rejectCountDelta) {
+      for (let i = 0; i < rejectCountDelta; i++) recordReject()
+    }
+
+    const resolvedNextSceneId = typeof nextSceneId === 'function' ? nextSceneId(expectedStats) : nextSceneId
+    goToScene(resolvedNextSceneId, allEffects)
   }
 
   return (

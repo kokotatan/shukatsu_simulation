@@ -488,6 +488,7 @@ export const sakuraScenario: Scenario = {
         {
           label: '大手メーカーの承諾書に名前を書く',
           sub: '「安定」を選ぶ',
+          offerCountDelta: 2,
           nextSceneId: 'sakura_ending_b_prep',
           effects: [{ key: 'stress', delta: -20 }, { key: 'axis', delta: -15 }],
         },
@@ -495,6 +496,7 @@ export const sakuraScenario: Scenario = {
           label: 'ベンチャーの内定を選び、大手を辞退する',
           sub: '「自分の言葉」を選ぶ',
           danger: true,
+          offerCountDelta: 2,
           nextSceneId: 'sakura_ending_a_prep',
           effects: [{ key: 'stress', delta: 20 }, { key: 'axis', delta: 25 }],
         },

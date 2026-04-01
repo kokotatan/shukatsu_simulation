@@ -24,7 +24,13 @@ const LOCATION_LABELS: Record<string, string> = {
 
 type Props = {
   scene: Scene
-  onChoice: (nextSceneId: string, effects: Scene['choices'][0]['effects'], cost?: number) => void
+  onChoice: (
+    nextSceneId: string | ((stats: import('@/types').GameStats) => string), 
+    effects: Scene['choices'][0]['effects'], 
+    cost?: number,
+    offerCountDelta?: number,
+    rejectCountDelta?: number
+  ) => void
   charColor: string
   charPortrait?: string
 }
@@ -212,7 +218,7 @@ export default function SceneView({ scene, onChoice, charColor, charPortrait }: 
                   className="w-full text-left px-4 py-4 border-2 border-white bg-black text-white text-sm transition-all duration-150 font-dot group relative"
                   onClick={(e) => {
                     e.stopPropagation()
-                    onChoice(choice.nextSceneId, choice.effects, choice.cost)
+                    onChoice(choice.nextSceneId, choice.effects, choice.cost, choice.offerCountDelta, choice.rejectCountDelta)
                   }}
                 >
                   <div className="flex items-start gap-3">

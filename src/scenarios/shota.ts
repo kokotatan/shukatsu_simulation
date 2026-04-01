@@ -739,8 +739,9 @@ export const shotaScenario: Scenario = {
       ],
       choices: [
         {
-          label: '面接を終える',
-          nextSceneId: 'shota_ending_a',
+          label: '結果を待つ',
+          offerCountDelta: 1,
+          nextSceneId: (stats: import('@/types').GameStats) => (stats.axis >= 60 && stats.mental >= 50 ? 'shota_ending_b' : 'shota_ending_a'),
           effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 10 }],
         },
       ],

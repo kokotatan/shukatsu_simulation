@@ -1,4 +1,4 @@
-import type { LocationId, StatKey, EndingId, CharacterId } from '@/types'
+import type { LocationId, StatKey, EndingId, CharacterId, GameStats } from '@/types'
 
 export type StatEffect = {
   key: StatKey
@@ -17,7 +17,9 @@ export type Choice = {
   sub?: string
   danger?: boolean
   cost?: number          // 金額コスト（moneyから引かれる）
-  nextSceneId: string
+  offerCountDelta?: number
+  rejectCountDelta?: number
+  nextSceneId: string | ((stats: GameStats) => string)
   effects: StatEffect[]
 }
 

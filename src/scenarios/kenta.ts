@@ -739,8 +739,9 @@ export const kentaScenario: Scenario = {
       dialogs: [],
       choices: [
         {
-          label: 'エンディングへ',
-          nextSceneId: 'kenta_ending_a',
+          label: '結果を待つ',
+          offerCountDelta: 1,
+          nextSceneId: (stats: import('@/types').GameStats) => (stats.axis >= 60 && stats.mental >= 50 ? 'kenta_ending_a' : 'kenta_ending_b'),
           effects: [{ key: 'axis', delta: 5 }],
         },
       ],
@@ -760,8 +761,9 @@ export const kentaScenario: Scenario = {
       dialogs: [],
       choices: [
         {
-          label: 'エンディングへ',
-          nextSceneId: 'kenta_ending_b',
+          label: '結果を待つ',
+          offerCountDelta: 1,
+          nextSceneId: (stats: import('@/types').GameStats) => (stats.axis >= 60 && stats.mental >= 50 ? 'kenta_ending_a' : 'kenta_ending_b'),
           effects: [{ key: 'mental', delta: 5 }],
         },
       ],

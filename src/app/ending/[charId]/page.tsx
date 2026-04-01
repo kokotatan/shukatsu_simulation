@@ -46,9 +46,11 @@ ENDING ${latestRecord.endingId}「${latestRecord.finalAxis}」
 内定: ${latestRecord.offerCount}社 / お祈り: ${latestRecord.rejectCount}社
 一番感じた気持ち: ${EMOTION_LABELS[topEmotion[0] as keyof typeof EMOTION_LABELS]?.emoji ?? ''} ${EMOTION_LABELS[topEmotion[0] as keyof typeof EMOTION_LABELS]?.label ?? ''}
 
-#就活というゲーム #就活RPG`
+https://shukatsu-tale.kotalabo.com
+#就活ゲーム #就活というゲーム #就活RPG`
 
   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`
+  const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent('https://shukatsu-tale.kotalabo.com')}&text=${encodeURIComponent(shareText)}`
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
@@ -120,16 +122,32 @@ ENDING ${latestRecord.endingId}「${latestRecord.finalAxis}」
           </div>
         </div>
 
+        {/* 振り返りメッセージ */}
+        <div className="text-center py-4">
+          <p className="text-sm md:text-base text-cream font-serif-jp tracking-wider">
+            納得いく就活はできましたか？
+          </p>
+        </div>
+
         {/* ボタン群 */}
         <div className="space-y-2">
           <a
             href={tweetUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full border border-bg-border hover:border-gold hover:text-gold
+            className="block w-full border border-bg-border hover:border-white hover:bg-black hover:text-white
                        text-cream py-3 px-4 text-sm font-dot text-center transition-colors"
           >
             ▶ Xでシェアする
+          </a>
+          <a
+            href={lineUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full border border-bg-border hover:border-[#06C755] hover:text-[#06C755]
+                       text-cream py-3 px-4 text-sm font-dot text-center transition-colors"
+          >
+            ▶ LINEでシェアする
           </a>
           <button
             onClick={() => {

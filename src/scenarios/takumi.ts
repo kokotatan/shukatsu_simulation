@@ -550,13 +550,9 @@ export const takumiScenario: Scenario = {
       ],
       choices: [
         {
-          label: '（axis が高い場合）→ 自分の言葉で内定を取るルートへ',
-          nextSceneId: 'takumi_ending_a',
-          effects: [],
-        },
-        {
-          label: '（axis が低い場合）→ テンプレのまま内定を取るルートへ',
-          nextSceneId: 'takumi_ending_b',
+          label: '電話に出る',
+          offerCountDelta: 1,
+          nextSceneId: (stats: import('@/types').GameStats) => (stats.axis >= 60 ? 'takumi_ending_a' : 'takumi_ending_b'),
           effects: [],
         },
       ],
