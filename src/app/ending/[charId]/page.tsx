@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { use, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
@@ -15,14 +15,15 @@ const EMOTION_LABELS = {
   void:      { emoji: '😶', label: '空虚' },
 }
 
-export default function EndingPage({ params }: { params: { charId: string } }) {
+export default function EndingPage({ params }: { params: Promise<{ charId: string }> }) {
+  const { charId: charIdParam } = use(params)
   const router = useRouter()
   const { records, phase, resetGame } = useGameStore()
-  const char = getCharacter(params.charId)
+  const char = getCharacter(charIdParam)
 
   const latestRecord = [...records]
     .reverse()
-    .find((r) => r.charId === params.charId)
+    .find((r) => r.charId === charIdParam)
 
   useEffect(() => {
     if (phase !== 'ending' || !latestRecord) {

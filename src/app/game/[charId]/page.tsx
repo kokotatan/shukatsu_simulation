@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { use, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '@/store/gameStore'
@@ -9,7 +9,8 @@ import SceneView from '@/components/game/SceneView'
 import EmotionBar from '@/components/emotion/EmotionBar'
 import type { StatEffect } from '@/scenarios/types'
 
-export default function GamePage({ params }: { params: { charId: string } }) {
+export default function GamePage({ params }: { params: Promise<{ charId: string }> }) {
+  const { charId: charIdParam } = use(params)
   const router = useRouter()
   const {
     charId,
@@ -21,15 +22,15 @@ export default function GamePage({ params }: { params: { charId: string } }) {
     phase,
   } = useGameStore()
 
-  const char = getCharacter(params.charId)
+  const char = getCharacter(charIdParam)
   const scene = getScene()
 
   // ゲームが初期化されていない場合はリダイレクト
   useEffect(() => {
-    if (!charId || charId !== params.charId || phase !== 'playing') {
+    if (!charId || charId !== charIdParam || phase !== 'playing') {
       router.replace('/select')
     }
-  }, [charId, params.charId, phase, router])
+  }, [charId, charIdParam, phase, router])
 
   // シーン進入時エフェクト
   useEffect(() => {
@@ -57,14 +58,14 @@ export default function GamePage({ params }: { params: { charId: string } }) {
     if (scene.isEnding && scene.endingId) {
       setEnding(scene.endingId, scene.endingTitle ?? '')
       const timer = setTimeout(() => {
-        router.push(`/ending/${params.charId}`)
+        router.push(`/ending/${charIdParam}`)
       }, 3000)
       return () => clearTimeout(timer)
     }
-  }, [scene.isEnding, scene.endingId, scene.endingTitle, params.charId, router, setEnding])
+  }, [scene.isEnding, scene.endingId, scene.endingTitle, charIdParam, router, setEnding])
 
   return (
-    <div className={`char-${params.charId}`}>
+    <div className={`char-${charIdParam}`}>
       <AnimatePresence mode="wait">
         <motion.div
           key={scene.id}
@@ -74,7 +75,6 @@ export default function GamePage({ params }: { params: { charId: string } }) {
           transition={{ duration: 0.25 }}
         >
           {scene.isEnding ? (
-            // エンディング表示
             <div className="min-h-screen flex flex-col items-center justify-center px-4 gap-8">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -122,7 +122,6 @@ export default function GamePage({ params }: { params: { charId: string } }) {
         </motion.div>
       </AnimatePresence>
 
-      {/* 感情バー */}
       <EmotionBar />
     </div>
   )
