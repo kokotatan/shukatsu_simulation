@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { characters } from '@/data/characters'
@@ -19,6 +20,12 @@ export default function SelectPage() {
       shota:  () => import('@/scenarios/shota').then(m => ({ shotaScenario: m.shotaScenario })),
       daiki:  () => import('@/scenarios/daiki').then(m => ({ daikiScenario: m.daikiScenario })),
       hikari: () => import('@/scenarios/hikari').then(m => ({ hikariScenario: m.hikariScenario })),
+      aoi:    () => import('@/scenarios/aoi').then(m => ({ aoiScenario: m.aoiScenario })),
+      takumi: () => import('@/scenarios/takumi').then(m => ({ takumiScenario: m.takumiScenario })),
+      kenta:  () => import('@/scenarios/kenta').then(m => ({ kentaScenario: m.kentaScenario })),
+      ren:    () => import('@/scenarios/ren').then(m => ({ renScenario: m.renScenario })),
+      sakura: () => import('@/scenarios/sakura').then(m => ({ sakuraScenario: m.sakuraScenario })),
+      yuto:   () => import('@/scenarios/yuto').then(m => ({ yutoScenario: m.yutoScenario })),
     }
 
     const keys: Record<string, string> = {
@@ -26,6 +33,12 @@ export default function SelectPage() {
       shota: 'shotaScenario',
       daiki: 'daikiScenario',
       hikari: 'hikariScenario',
+      aoi: 'aoiScenario',
+      takumi: 'takumiScenario',
+      kenta: 'kentaScenario',
+      ren: 'renScenario',
+      sakura: 'sakuraScenario',
+      yuto: 'yutoScenario',
     }
 
     const loader = scenarioMap[char.id]
@@ -60,7 +73,7 @@ export default function SelectPage() {
         {/* キャラ一覧 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {characters.map((char, i) => {
-            const isAvailable = ['misaki', 'shota', 'daiki', 'hikari'].includes(char.id)
+            const isAvailable = true // 全キャラ有効化
             return (
               <motion.button
                 key={char.id}
@@ -68,33 +81,49 @@ export default function SelectPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
                 onClick={() => isAvailable && setSelected(char)}
-                className={`text-left border p-4 transition-colors duration-150 relative
-                  ${selected?.id === char.id ? 'border-current' : 'border-bg-border'}
-                  ${!isAvailable ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:border-current'}`}
+                className={`text-left border-4 p-4 transition-all duration-150 relative bg-black
+                  ${selected?.id === char.id ? 'border-white' : 'border-neutral-800'}
+                  ${!isAvailable ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:border-white'}`}
                 style={{
                   '--char-color': char.themeColor,
-                  borderColor: selected?.id === char.id ? char.themeColor : undefined,
+                  color: selected?.id === char.id ? char.themeColor : 'white',
                 } as React.CSSProperties}
                 onMouseEnter={(e) => {
-                  if (isAvailable) e.currentTarget.style.borderColor = char.themeColor
+                  if (isAvailable && selected?.id !== char.id) e.currentTarget.style.color = char.themeColor
                 }}
                 onMouseLeave={(e) => {
-                  if (selected?.id !== char.id) e.currentTarget.style.borderColor = ''
+                  if (selected?.id !== char.id) e.currentTarget.style.color = 'white'
                 }}
                 disabled={!isAvailable}
               >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="font-dot text-sm" style={{ color: isAvailable ? char.themeColor : undefined }}>
-                      {char.name}
+                <div className="flex items-start gap-3">
+                  {char.portrait && (
+                    <div className={`flex-shrink-0 w-16 h-16 border-2 relative overflow-hidden bg-black ${selected?.id === char.id || 'opacity-80'}`} style={{ borderColor: selected?.id === char.id ? char.themeColor : 'white' }}>
+                      <Image
+                        src={char.portrait}
+                        alt={char.name}
+                        fill
+                        className="object-cover"
+                        style={{ imageRendering: 'pixelated' }}
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="font-dot text-sm uppercase tracking-widest">
+                          {char.name}
+                        </p>
+                        <p className="text-white/50 text-[10px] mt-0.5">{char.nameKana}</p>
+                      </div>
+                      <span className="text-white/50 text-[10px]">{char.faculty}</span>
+                    </div>
+                    <p className="text-white/80 text-[10px] mt-2 font-serif-jp leading-relaxed line-clamp-2">
+                      {char.tagline}
                     </p>
-                    <p className="text-cream-muted text-xs mt-0.5">{char.nameKana}</p>
                   </div>
-                  <span className="text-cream-muted text-xs">{char.faculty}</span>
                 </div>
-                <p className="text-cream-dim text-xs mt-2 font-serif-jp leading-relaxed line-clamp-2">
-                  {char.tagline}
-                </p>
+
                 {!isAvailable && (
                   <span className="absolute top-2 right-2 text-xs text-cream-muted border border-bg-border px-1">
                     準備中
@@ -154,22 +183,26 @@ export default function SelectPage() {
                 ))}
               </div>
 
+              <span className="block h-[2px] w-full bg-neutral-800" />
               <button
                 onClick={() => handleStart(selected)}
-                className="w-full border py-3 font-dot text-sm transition-colors duration-150"
+                className="w-full border-2 py-4 font-dot text-sm transition-colors duration-150 flex items-center justify-center gap-2"
                 style={{
                   borderColor: selected.themeColor,
                   color: selected.themeColor,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = selected.themeColor + '20'
+                  e.currentTarget.style.backgroundColor = selected.themeColor
+                  e.currentTarget.style.color = '#000'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = ''
+                  e.currentTarget.style.backgroundColor = 'transparent'
+                  e.currentTarget.style.color = selected.themeColor
                 }}
               >
-                ▶ {selected.name} の就活を始める
+                <span className="text-lg leading-none mt-[-2px]">❤</span> {selected.name} の就活を始める
               </button>
+
             </motion.div>
           )}
         </AnimatePresence>

@@ -13,6 +13,7 @@ export const characters: Character[] = [
     themeColor: '#4a90d9',
     tags: ['地方学生', '奨学金', '経済的制約'],
     theme: '就活は平等じゃない',
+    portrait: '/assets/portraits/misaki.png',
     initialStats: {
       stress: 20,
       mental: 65,
@@ -32,6 +33,7 @@ export const characters: Character[] = [
     themeColor: '#e8873a',
     tags: ['活動量多い', '言語化できない', '引っ張られ型'],
     theme: '経験の量と深さは別物',
+    portrait: '/assets/portraits/shota.png',
     initialStats: {
       stress: 30,
       mental: 60,
@@ -51,6 +53,7 @@ export const characters: Character[] = [
     themeColor: '#9b6bb5',
     tags: ['コンサル志望', '情報過多', 'ブランド志向'],
     theme: 'ブランドへの憧れと自分のやりたいことの乖離',
+    portrait: '/assets/portraits/aoi.png',
     initialStats: {
       stress: 40,
       mental: 55,
@@ -70,6 +73,7 @@ export const characters: Character[] = [
     themeColor: '#d4433a',
     tags: ['体育会系', '主将', 'テンプレ'],
     theme: '「部活で培ったもの」という言葉の陳腐化',
+    portrait: '/assets/portraits/takumi.png',
     initialStats: {
       stress: 25,
       mental: 70,
@@ -89,6 +93,7 @@ export const characters: Character[] = [
     themeColor: '#5aaa6e',
     tags: ['平凡', 'バイト学生', '幽霊部員'],
     theme: '「普通の学生」が就活市場で何者かになろうとする話',
+    portrait: '/assets/portraits/kenta.png',
     initialStats: {
       stress: 50,
       mental: 40,
@@ -108,6 +113,7 @@ export const characters: Character[] = [
     themeColor: '#3a7fb5',
     tags: ['研究没頭', '出遅れ', '博士進学迷い'],
     theme: '研究者としての誇りと社会への接続',
+    portrait: '/assets/portraits/ren.png',
     initialStats: {
       stress: 60,
       mental: 45,
@@ -127,6 +133,7 @@ export const characters: Character[] = [
     themeColor: '#d4836e',
     tags: ['早期内定', '第一志望', '不安'],
     theme: '「勝ち」の定義とは何か',
+    portrait: '/assets/portraits/sakura.png',
     initialStats: {
       stress: 15,
       mental: 50,
@@ -146,6 +153,7 @@ export const characters: Character[] = [
     themeColor: '#6bbfbf',
     tags: ['軸あり', 'ミーハー迷い', '研究職志望'],
     theme: '決まっている軸を、外からの誘惑がじわじわと揺さぶる',
+    portrait: '/assets/portraits/yuto.png',
     initialStats: {
       stress: 20,
       mental: 65,
@@ -165,6 +173,7 @@ export const characters: Character[] = [
     themeColor: '#c8a848',
     tags: ['スタートアップ経験', '大手志望', '理解されない'],
     theme: 'スタートアップ経験者が大手を選ぶことへの、周囲の理解のなさ',
+    portrait: '/assets/portraits/daiki.png',
     initialStats: {
       stress: 25,
       mental: 70,
@@ -184,6 +193,7 @@ export const characters: Character[] = [
     themeColor: '#d4a0c8',
     tags: ['軸あり', 'ミーハー迷い', 'マーケター志望'],
     theme: '軸があることと、迷わないことは別の話',
+    portrait: '/assets/portraits/hikari.png',
     initialStats: {
       stress: 20,
       mental: 65,

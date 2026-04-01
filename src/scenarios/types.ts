@@ -9,6 +9,7 @@ export type Dialog = {
   speaker: string
   line: string
   inner?: string    // このセリフを言いながら心の中で思っていること
+  portrait?: string  // 個別のポートレート画像パス
 }
 
 export type Choice = {

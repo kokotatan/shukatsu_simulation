@@ -114,6 +114,7 @@ export default function GamePage({ params }: { params: Promise<{ charId: string 
               scene={scene}
               onChoice={handleChoice}
               charColor={char.themeColor}
+              charPortrait={char.portrait}
             />
           )}
         </motion.div>

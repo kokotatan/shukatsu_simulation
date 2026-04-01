@@ -2,16 +2,16 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #080a0c;
-  --bg-soft: #0f1214;
-  --bg-card: #141820;
-  --bg-border: #1e2428;
-  --cream: #ddd8c8;
-  --cream-dim: #9a9488;
-  --cream-muted: #606870;
-  --gold: #c8a848;
-  --gold-light: #d4b85a;
-  --char-color: #c8a848;
+  --bg: #000000;
+  --bg-soft: #000000;
+  --bg-card: #000000;
+  --bg-border: #ffffff;
+  --cream: #ffffff;
+  --cream-dim: #cccccc;
+  --cream-muted: #aaaaaa;
+  --gold: #ffff00;
+  --gold-light: #ffff88;
+  --char-color: #ffffff;
 }
 
 * {

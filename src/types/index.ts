@@ -51,6 +51,7 @@ export type Character = {
   initialStats: GameStats
   tags: string[]
   theme: string
+  portrait?: string
 }
 
 export type EmotionState = {
