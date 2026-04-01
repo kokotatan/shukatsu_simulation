@@ -26,7 +26,7 @@ export default function TitlePage() {
           transition={{ duration: 0.8 }}
           className="text-center space-y-3"
         >
-          <p className="text-cream-muted text-xs tracking-widest">株式会社ナラティブワークス presents</p>
+          <p className="text-cream-muted text-xs tracking-widest">Kotaro Design Lab. presents</p>
           <h1 className="text-2xl md:text-3xl text-gold font-dot leading-snug">
             #就活というゲーム
           </h1>
