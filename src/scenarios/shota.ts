@@ -5,400 +5,767 @@ import type { Scenario } from './types'
 
 export const shotaScenario: Scenario = {
   charId: 'shota',
-  startSceneId: 'shota_start',
+  startSceneId: 'shota_oct_start',
   scenes: [
+
+    // ── PHASE 1：10月 活動を積み重ねる ──
+
     {
-      id: 'shota_start',
+      id: 'shota_oct_start',
       location: 'university',
       narrations: [
-        '3月。面接解禁。',
-        '翔太はESを仕上げながら、過去の活動を並べていた。',
-        '学祭実行委員・ハッカソン・インターン2社・ボランティア3回・ゼミ発表。',
-        '数えたら12個ある。',
-        '友達に見せたら「すごいな」と言われた。',
+        '大学3年生、10月。',
+        '翔太のスマホのカレンダーは、予定でぎっしりだ。',
+        '学祭実行委員の打ち合わせ、ハッカソンのキックオフ、インターンの説明会。',
+        '「お前ほど活動してる人、いないよな」と友達に言われた。',
+        '翔太は笑って「まあな」と答えた。',
+        'でも、内心では少し違和感があった。',
       ],
       dialogs: [
         {
           speaker: '翔太（心の声）',
-          line: 'これだけあれば、自己PRには困らないはずだ。',
+          line: '活動してる。してるけど、なんか…手応えが薄い。いつも誰かについていってる気がする。',
         },
       ],
       choices: [
         {
-          label: 'ESに12個の活動を全部書く',
-          sub: 'とにかく多く見せる',
-          nextSceneId: 'shota_es_many',
-          effects: [{ key: 'stress', delta: 3 }, { key: 'axis', delta: -3 }],
+          label: 'とにかく活動を増やし続ける',
+          sub: '量で圧倒する',
+          nextSceneId: 'shota_more_activities',
+          effects: [{ key: 'stress', delta: 8 }, { key: 'axis', delta: -3 }],
         },
         {
-          label: '一番インパクトがある活動だけを深掘りする',
-          sub: '量より質で勝負する',
-          nextSceneId: 'shota_es_depth',
+          label: '一つの活動を深めることを意識する',
+          sub: '量より質に転換する',
+          nextSceneId: 'shota_depth_attempt',
+          effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 3 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_more_activities',
+      location: 'university',
+      narrations: [
+        '11月。ボランティアにも参加した。',
+        '12月。ハッカソンで3位に入賞した。',
+        'でも正直に言うと、アイデアは渡辺くんが出した。',
+        '翔太はそのアイデアの実装とプレゼンをやった。',
+        '「橘がいたから入賞できた」と言われた。',
+        '嬉しかった。でも何かが引っかかった。',
+      ],
+      choices: [
+        {
+          label: 'このままペースを上げる',
+          nextSceneId: 'shota_winter_intern',
+          effects: [{ key: 'stress', delta: 8 }, { key: 'axis', delta: -5 }],
+        },
+        {
+          label: 'なぜ引っかかるのか考える',
+          nextSceneId: 'shota_self_doubt',
           effects: [{ key: 'axis', delta: 8 }, { key: 'mental', delta: 3 }],
         },
       ],
     },
 
     {
-      id: 'shota_es_many',
+      id: 'shota_depth_attempt',
       location: 'university',
       narrations: [
-        'ESを書き終えた。活動が多すぎて、一つ一つが3行になってしまった。',
-        'なんか薄い。',
-        'でも数は多い。これでいこう。',
+        '学祭実行委員の仕事に集中してみた。',
+        '委員長のやり方を見ていた。',
+        '「翔太、このタスクお願い」という指示が来る。',
+        '翔太はそれをこなした。上手にこなした。',
+        'でも、自分から「こうしよう」と言い出せたことは、ほとんどなかった。',
       ],
       choices: [
         {
-          label: 'そのまま提出する',
-          nextSceneId: 'shota_interview_1',
-          effects: [{ key: 'stress', delta: 3 }, { key: 'axis', delta: -5 }],
+          label: '「補佐が得意」と割り切る',
+          nextSceneId: 'shota_winter_intern',
+          effects: [{ key: 'axis', delta: -5 }, { key: 'stress', delta: -3 }],
         },
         {
-          label: 'やっぱり絞り込む',
-          nextSceneId: 'shota_es_depth',
-          effects: [{ key: 'axis', delta: 5 }],
+          label: 'なぜ自分から動けないのか向き合う',
+          nextSceneId: 'shota_self_doubt',
+          effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 5 }],
         },
       ],
     },
 
     {
-      id: 'shota_es_depth',
-      location: 'university',
+      id: 'shota_self_doubt',
+      location: 'cafe',
       narrations: [
-        'どの活動を書くか考えた。',
-        'ハッカソン。でも…正直、アイデアは他の人が出した。',
-        'インターン。でも…指示されたことをやっただけだ。',
-        '学祭。でも…実行委員と言っても、いつも誰かの補佐だった。',
+        '深夜のカフェ。一人で考えた。',
+        '「なぜ引っ張れないのか」',
+        '怖いのかもしれない。',
+        '提案して失敗するのが怖い。',
+        '誰かについていれば、失敗したときの言い訳ができる。',
+        'そういうことか、と気づいた。',
+        '気づいて、少し楽になった。',
+      ],
+      dialogs: [
+        {
+          speaker: '翔太（心の声）',
+          line: 'じゃあ、自分から動くことを、一回だけ試してみるか。',
+        },
+      ],
+      choices: [
+        {
+          label: 'インターンで自分から動くことを意識する',
+          nextSceneId: 'shota_winter_intern',
+          effects: [{ key: 'axis', delta: 12 }, { key: 'mental', delta: 5 }],
+        },
+      ],
+    },
+
+    // ── PHASE 2：冬インターン ──
+
+    {
+      id: 'shota_winter_intern',
+      location: 'company',
+      narrations: [
+        '12月。IT系ベンチャーの冬インターン。3日間。',
+        '「新機能の企画を考えてプレゼンしてください」というお題だった。',
+        '5人のグループ。',
+        '1日目の夜、グループのチャットで企画案が出始めた。',
+        'Aさんが「こういうのどう？」と出してきた。',
+        '面白かった。翔太は「いいと思います！」と打った。',
+        'その瞬間、また気づいた。',
+      ],
+      dialogs: [
+        {
+          speaker: '翔太（心の声）',
+          line: 'また乗っかった。今日こそ自分から出すつもりだったのに。',
+        },
+      ],
+      choices: [
+        {
+          label: '「さらにこういう観点も加えられませんか」と追加提案する',
+          nextSceneId: 'shota_intern_initiative',
+          effects: [{ key: 'axis', delta: 12 }, { key: 'mental', delta: 5 }],
+        },
+        {
+          label: 'Aさんの案を一緒に磨く役割に回る',
+          nextSceneId: 'shota_intern_support',
+          effects: [{ key: 'axis', delta: 3 }, { key: 'stress', delta: -3 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_intern_initiative',
+      location: 'company',
+      narrations: [
+        '「ユーザーの感情ログを取れると面白いと思います。使っているときの感情の変化を可視化する機能を追加したらどうでしょう」',
+        '翔太がそう書いた。',
+        'しばらく間があった。',
+        'Aさんが「面白い！それ入れましょう」と返信した。',
+        '翔太は、少しだけ自分を取り戻した気がした。',
+      ],
+      choices: [
+        {
+          label: 'プレゼン本番でもリードする',
+          nextSceneId: 'shota_intern_present',
+          effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 8 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_intern_support',
+      location: 'company',
+      narrations: [
+        'Aさんの企画を支える形で動いた。',
+        'プレゼン資料の作成、データ収集。',
+        '最後のプレゼン、Aさんが話した。',
+        '社員に「よくできていましたよ」と言われた。',
+        '翔太は「ありがとうございます」と言いながら、また何かが引っかかった。',
+      ],
+      choices: [
+        {
+          label: 'このまま本選考に向けて動く',
+          nextSceneId: 'shota_jan_selfanalysis',
+          effects: [{ key: 'axis', delta: -3 }, { key: 'stress', delta: 3 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_intern_present',
+      location: 'company',
+      narrations: [
+        'プレゼン本番。翔太がリードして話した。',
+        '「感情ログ機能」の部分を、自分の言葉で説明した。',
+        '社員から「その機能のアイデア、誰が考えたんですか？」と聞かれた。',
+        '翔太は「私が提案しました」と答えた。',
+        '初めて、そう言えた。',
+      ],
+      choices: [
+        {
+          label: '1月の自己分析に向かう',
+          nextSceneId: 'shota_jan_selfanalysis',
+          effects: [{ key: 'axis', delta: 15 }, { key: 'mental', delta: 10 }],
+        },
+      ],
+    },
+
+    // ── PHASE 3：1月 自己分析の壁 ──
+
+    {
+      id: 'shota_jan_selfanalysis',
+      location: 'home',
+      narrations: [
+        '1月。ES作成のための自己分析。',
+        '活動リストを書き出した。',
+        '学祭実行委員・ハッカソン3位・インターン2社・ボランティア3回・ゼミ発表。',
+        'すごい量だ。',
+        '次の問い。「その活動で、あなたが主体的にやったことは何ですか？」',
         '翔太の手が止まった。',
       ],
       dialogs: [
         {
           speaker: '翔太（心の声）',
-          line: '…俺、何もしてないじゃないか。',
+          line: '学祭は先輩の指示で動いた。ハッカソンは渡辺くんのアイデアに乗った。インターン1社目は上司の指示通り。ボランティアは事務局スケジュール通り。インターン2社目で初めて自分から提案した。…1個だ。12個の活動で、自分で動かしたのは実質1個だ。',
         },
       ],
       choices: [
         {
-          label: '少し誇張して「主体的にやった」と書く',
-          danger: true,
-          nextSceneId: 'shota_lie_path',
-          effects: [{ key: 'stress', delta: 10 }, { key: 'axis', delta: -8 }],
+          label: 'その1個を深く掘り下げる',
+          nextSceneId: 'shota_one_truth',
+          effects: [{ key: 'axis', delta: 15 }, { key: 'mental', delta: 5 }],
         },
         {
-          label: '「補佐をした」と正直に書いて、そこから学んだことを深める',
-          nextSceneId: 'shota_honest_path',
-          effects: [{ key: 'axis', delta: 12 }, { key: 'mental', delta: 5 }],
+          label: '全部「主体的だった」ことにして書く',
+          danger: true,
+          nextSceneId: 'shota_lie_path',
+          effects: [{ key: 'stress', delta: 12 }, { key: 'axis', delta: -10 }],
+        },
+        {
+          label: '「補佐役として貢献した」という軸で書く',
+          nextSceneId: 'shota_support_axis',
+          effects: [{ key: 'axis', delta: 8 }, { key: 'stress', delta: -3 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_one_truth',
+      location: 'home',
+      narrations: [
+        'インターン2社目での感情ログ提案。',
+        'それだけを深く書いた。',
+        '「なぜその提案ができたか」「何を考えていたか」「結果どうなったか」',
+        '3行だったものが、1000字になった。',
+        '書いていたら、自分が何を大切にしているかが見えてきた。',
+        '「使う人の感情を見たい」「数字の裏にある気持ちを可視化したい」',
+        'それが自分の軸だったのかもしれない。',
+      ],
+      choices: [
+        {
+          label: 'ESをこの軸で書き上げる',
+          nextSceneId: 'shota_es_submit',
+          effects: [{ key: 'axis', delta: 15 }, { key: 'mental', delta: 8 }],
         },
       ],
     },
 
     {
       id: 'shota_lie_path',
-      location: 'university',
+      location: 'home',
       narrations: [
-        '「主体的にプロジェクトをリード」と書いた。',
+        '全部「主体的に動いた」と書いた。',
         '嘘じゃない…ような気もする。',
-        '少し引っ張っただけ、だから。',
+        '全部に関わったのは本当だし。',
+        'でも書きながら、違和感が蓄積していった。',
+        'これで面接官に深掘りされたら、答えられない。',
       ],
       choices: [
         {
-          label: '面接に臨む',
-          nextSceneId: 'shota_interview_1',
-          effects: [{ key: 'stress', delta: 8 }],
+          label: '面接でうまく誤魔化す自信がある',
+          nextSceneId: 'shota_es_submit',
+          effects: [{ key: 'stress', delta: 10 }, { key: 'axis', delta: -5 }],
+        },
+        {
+          label: 'やっぱり正直に書き直す',
+          nextSceneId: 'shota_one_truth',
+          effects: [{ key: 'axis', delta: 10 }],
         },
       ],
     },
 
     {
-      id: 'shota_honest_path',
+      id: 'shota_support_axis',
+      location: 'home',
+      narrations: [
+        '「サポーターとしての貢献」を軸にした。',
+        '「チームの目標達成を支えることに徹してきた」と書いた。',
+        '嘘じゃない。でも、どこかで「それって弱みじゃないか」という声が聞こえた。',
+      ],
+      choices: [
+        {
+          label: 'この方向で書いて提出する',
+          nextSceneId: 'shota_es_submit',
+          effects: [{ key: 'axis', delta: 5 }],
+        },
+        {
+          label: 'もう一つの軸（1個の主体的な経験）も加える',
+          nextSceneId: 'shota_one_truth',
+          effects: [{ key: 'axis', delta: 8 }],
+        },
+      ],
+    },
+
+    // ── PHASE 4：3〜4月 書類選考・一次面接 ──
+
+    {
+      id: 'shota_es_submit',
       location: 'university',
       narrations: [
-        '「サポートとして参加し、実行力の高い人の動き方を間近で学んだ」と書いた。',
-        '弱く見えるかもしれない。でも、嘘じゃない。',
+        '3月。ESを10社に提出した。',
+        '結果：7社通過、3社不合格。',
+        '通過率は悪くない。',
+        '「活動量の多さが評価されたのかも」と翔太は思った。',
+        'でも本当に試されるのは面接だ。',
       ],
       choices: [
         {
-          label: '面接に臨む',
-          nextSceneId: 'shota_interview_1',
-          effects: [{ key: 'axis', delta: 3 }, { key: 'mental', delta: 3 }],
+          label: '一次面接の練習をしっかりやる',
+          nextSceneId: 'shota_interview_prep',
+          effects: [{ key: 'mental', delta: 5 }, { key: 'axis', delta: 3 }],
+        },
+        {
+          label: '準備より数をこなすことを優先する',
+          nextSceneId: 'shota_1st_interview',
+          effects: [{ key: 'stress', delta: 5 }],
         },
       ],
     },
 
     {
-      id: 'shota_interview_1',
+      id: 'shota_interview_prep',
+      location: 'university',
+      narrations: [
+        'キャリアセンターで模擬面接をしてもらった。',
+        '「ハッカソンで入賞されたんですね。どんなアイデアでしたか？」',
+        '翔太は答えた。するとすぐに次の質問が来た。',
+        '「そのアイデア、翔太さんが考えたんですか？」',
+        '…止まった。',
+      ],
+      dialogs: [
+        {
+          speaker: 'キャリアセンターの職員',
+          line: '正直に言いますね。今の話、「チームが考えた」って言った方がいいですよ。面接官はすぐ気づきます',
+        },
+        {
+          speaker: '翔太',
+          line: '…はい',
+          inner: 'わかってた。でも言われると刺さる。',
+        },
+      ],
+      choices: [
+        {
+          label: '正直路線で面接に臨む',
+          nextSceneId: 'shota_1st_interview',
+          effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 5 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_1st_interview',
       location: 'interview_room',
       narrations: [
-        '一次面接。',
-        '面接官は30代の若い男性。',
-        '「翔太さん、ESを拝見しました。色々な活動をされていますね」',
+        '4月。一次面接が始まった。',
+        '大手IT企業。面接官は一人。',
+        '「では、ESに書かれているハッカソンの話を聞かせてください」',
       ],
       dialogs: [
         {
           speaker: '面接官',
-          line: '例えばこのハッカソン、あなたはチームの中でどんな役割でしたか？',
-          inner: '（活動の数が多い割に、一個一個が薄い。実際どこまでやったのか確認したい）',
+          line: 'チームで3位入賞とのことですが、橘さんはどんな役割でしたか？',
+          inner: '（活動量は多い。でも、一個一個が薄い印象がある。実際を確認しよう）',
         },
         {
           speaker: '翔太',
-          line: 'えっと、アイデア出しとプレゼン担当でした',
-          inner: 'アイデアは主に渡辺くんが出した。俺はそれに乗っかったんだよな。',
+          line: '実装とプレゼン資料の担当でした。アイデア自体はチームのメンバーが主に出してくれて、私はそれを形にする役割でした',
+          inner: '言えた。正直に言えた。',
         },
         {
           speaker: '面接官',
-          line: 'そのアイデア、具体的にどんな発想から来たんですか？あなたが提案した部分は？',
-          inner: '（そこを聞きたかった。誰でも「参加した」とは言える）',
+          line: 'なるほど。その実装で、難しかったことを教えてください',
+          inner: '（正直に言えた。実装力があれば評価できる）',
+        },
+        {
+          speaker: '翔太',
+          line: 'APIの繋ぎ込みで詰まりました。ドキュメントが少ないAPIで、Stack Overflowとソースコードを読みながら2日かけて解決しました',
+        },
+        {
+          speaker: '面接官',
+          line: '自分で調べて解決できた、ということですね。それは大事なことです',
+          inner: '（実装力はある。問題はここを自分で動かしたかどうかだが、正直さは好感が持てる）',
         },
       ],
       choices: [
         {
-          label: '「チームで出し合いました」と答える',
-          sub: '正直に言う',
-          nextSceneId: 'shota_interview_honest',
-          effects: [{ key: 'axis', delta: 5 }, { key: 'stress', delta: 5 }],
+          label: 'インターンでの「感情ログ提案」の話を追加する',
+          nextSceneId: 'shota_1st_add_story',
+          effects: [{ key: 'axis', delta: 12 }, { key: 'mental', delta: 5 }],
         },
         {
-          label: '少し盛って「自分が〇〇を提案した」と答える',
-          danger: true,
-          nextSceneId: 'shota_interview_caught',
-          effects: [{ key: 'stress', delta: 15 }, { key: 'axis', delta: -10 }],
-        },
-        {
-          label: '「それより私が学んだのは…」と話を切り替える',
-          nextSceneId: 'shota_interview_pivot',
-          effects: [{ key: 'stress', delta: 8 }, { key: 'axis', delta: 3 }],
+          label: 'このまま面接を続ける',
+          nextSceneId: 'shota_1st_continue',
+          effects: [{ key: 'axis', delta: 5 }],
         },
       ],
     },
 
     {
-      id: 'shota_interview_honest',
+      id: 'shota_1st_add_story',
       location: 'interview_room',
       narrations: [],
       dialogs: [
         {
           speaker: '翔太',
-          line: '正直に言うと、アイデアはチームメンバーが中心で出してくれました。私は実装とプレゼンの資料まとめを担当しました',
+          line: '別の話になりますが、インターンで初めて自分からアイデアを出した経験があります。「感情ログ機能」を提案して、それがチームに採用されてプロダクトに実装されました。その時に初めて「自分がやった」と言える仕事ができたと感じました',
         },
         {
           speaker: '面接官',
-          line: 'ありがとうございます。その実装で、特に苦労したことは？',
-          inner: '（正直に言えた。これは悪くない。実装力があるならそっちで評価できる）',
+          line: 'それは、なぜそのタイミングで提案できたんですか？',
+          inner: '（面白い。自己認識ができている）',
         },
         {
           speaker: '翔太',
-          line: 'APIの繋ぎ込みで詰まって、結局徹夜になりました。チームに迷惑をかけましたが、最終的には動かせました',
+          line: '今まで怖かったんだと思います。提案して否定されることが。でも、チームの雰囲気があったかくて、「出してみよう」と思えました',
         },
       ],
       choices: [
         {
-          label: 'そのまま面接を続ける',
-          nextSceneId: 'shota_deep_question',
+          label: '一次面接終了。結果を待つ',
+          nextSceneId: 'shota_1st_result',
+          effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 8 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_1st_continue',
+      location: 'interview_room',
+      narrations: [],
+      dialogs: [
+        {
+          speaker: '面接官',
+          line: '橘さん、正直に聞きます。これだけ活動してきて、自分で「これは俺がやった」と言えることって、どれくらいありますか？',
+          inner: '（核心を突いてみよう）',
+        },
+        {
+          speaker: '翔太',
+          line: '…（少し間があった）正直に言うと、少ないです。ほとんどは誰かについていきました',
+          inner: '言えた。これが本当のことだ。',
+        },
+        {
+          speaker: '面接官',
+          line: 'それ、わかって言ってるのはすごいことですよ',
+          inner: '（自己認識がある。これは伸びる素材かもしれない）',
+        },
+      ],
+      choices: [
+        {
+          label: '一次面接終了。結果を待つ',
+          nextSceneId: 'shota_1st_result',
           effects: [{ key: 'axis', delta: 8 }, { key: 'mental', delta: 5 }],
         },
       ],
     },
 
     {
-      id: 'shota_interview_caught',
-      location: 'interview_room',
-      narrations: [],
+      id: 'shota_1st_result',
+      location: 'phone',
+      narrations: [
+        '4月下旬。',
+        '7社中4社が一次通過。3社が不合格。',
+        '不合格の3社は、活動の薄さを突かれた感じがした面接だった。',
+        '通過した4社は、正直に話せた面接だった。',
+        '翔太は、ひとつのことを確認した。',
+      ],
       dialogs: [
         {
-          speaker: '翔太',
-          line: '自分がUIのアイデアを出しました。ユーザー目線で…',
-        },
-        {
-          speaker: '面接官',
-          line: 'なるほど。ちなみにそのUIのどの部分を具体的に？',
-          inner: '（深掘りしてみよう。ちょっとふわっとした答えだった）',
-        },
-        {
-          speaker: '翔太',
-          line: '…えっと、配色とか、レイアウトとか…',
-          inner: 'やばい。これ渡辺くんが決めたやつだ。',
-        },
-        {
-          speaker: '面接官',
-          line: '（静かに）そうですか。',
-          inner: '（あ、この子、盛ってるな。次の質問で確認しよう）',
+          speaker: '翔太（心の声）',
+          line: '正直に話した方が、通った。それは偶然じゃないかもしれない。',
         },
       ],
       choices: [
         {
-          label: '「すみません、少し言い過ぎました」と正直に言い直す',
-          nextSceneId: 'shota_interview_recovery',
-          effects: [{ key: 'axis', delta: 10 }, { key: 'stress', delta: 5 }],
+          label: '二次面接へ進む',
+          nextSceneId: 'shota_2nd_prep',
+          effects: [{ key: 'axis', delta: 8 }, { key: 'mental', delta: 5 }],
+        },
+      ],
+    },
+
+    // ── PHASE 5：5月 二次・最終面接 ──
+
+    {
+      id: 'shota_2nd_prep',
+      location: 'cafe',
+      narrations: [
+        '5月。二次面接の準備をしていた。',
+        '「なぜうちを志望するのか」「入社後に何をしたいか」',
+        '今まで考えていなかった問いだった。',
+        '活動をこなすことに精一杯で、「将来何がしたいか」を真剣に考えたことがなかった。',
+      ],
+      dialogs: [
+        {
+          speaker: '翔太（心の声）',
+          line: 'インターンで「感情を可視化したい」と思った。あれが、今の自分に一番近い答えかもしれない。ユーザーの気持ちを技術で見えるようにすること。それがやりたいことか。',
+        },
+      ],
+      choices: [
+        {
+          label: '「感情データ×技術」という軸で志望動機を固める',
+          nextSceneId: 'shota_2nd_interview',
+          effects: [{ key: 'axis', delta: 15 }, { key: 'mental', delta: 8 }],
         },
         {
-          label: 'そのまま押し通す',
-          nextSceneId: 'shota_interview_fail',
-          effects: [{ key: 'stress', delta: 20 }, { key: 'axis', delta: -15 }],
+          label: 'まだ決まっていないが、正直にそのまま話す',
+          nextSceneId: 'shota_2nd_interview_honest',
+          effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 5 }],
         },
       ],
     },
 
     {
-      id: 'shota_interview_recovery',
+      id: 'shota_2nd_interview',
+      location: 'interview_room',
+      narrations: ['二次面接。面接官2名。'],
+      dialogs: [
+        {
+          speaker: '面接官A',
+          line: '橘さん、なぜ弊社を志望しているんですか？',
+          inner: '（一次では正直な人だった。二次でも本音が出るか見たい）',
+        },
+        {
+          speaker: '翔太',
+          line: '御社のプロダクトは、ユーザーの行動データを深く分析していると説明会で聞きました。私はインターンで「感情を可視化する」という体験をして以来、人の気持ちを数字として見えるようにする仕事に興味を持っています。御社でそれが実現できると思いました',
+        },
+        {
+          speaker: '面接官B',
+          line: 'それは具体的にどんな形で実現したいですか？',
+          inner: '（軸がある。掘ってみよう）',
+        },
+        {
+          speaker: '翔太',
+          line: '正直、まだ具体的なビジョンはありません。でも、最初は現場で泥臭くデータを触り、ユーザーの行動の意味を読み解く力をつけたいと思っています',
+        },
+        {
+          speaker: '面接官A',
+          inner: '（謙虚だ。そして正直だ。これは採りたい）',
+          line: 'それは正直でいいですね。では最後に、自分の弱みを教えてください',
+        },
+      ],
+      choices: [
+        {
+          label: '「自分から動くことへの怖れ」を正直に話す',
+          nextSceneId: 'shota_2nd_weakness',
+          effects: [{ key: 'axis', delta: 12 }, { key: 'mental', delta: 5 }],
+        },
+        {
+          label: '無難な弱みを言う',
+          nextSceneId: 'shota_2nd_safe',
+          effects: [{ key: 'axis', delta: 3 }, { key: 'stress', delta: 5 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_2nd_interview_honest',
+      location: 'interview_room',
+      narrations: [],
+      dialogs: [
+        {
+          speaker: '面接官A',
+          line: '橘さん、志望動機を教えてください',
+        },
+        {
+          speaker: '翔太',
+          line: '正直に言うと、まだ「これがやりたい」という一本の軸はありません。ただ、インターンで自分から初めてアイデアを出した経験から、ユーザーの感情と技術を繋ぐ仕事に興味を持ち始めています。御社でその興味を育てたいと思っています',
+        },
+        {
+          speaker: '面接官B',
+          inner: '（これは正直すぎる答えだ。評価が難しい。でも誠実さは感じる）',
+          line: 'わかりました。では、その興味のきっかけになったインターンの話を聞かせてください',
+        },
+      ],
+      choices: [
+        {
+          label: '感情ログの話を丁寧に話す',
+          nextSceneId: 'shota_2nd_weakness',
+          effects: [{ key: 'axis', delta: 10 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_2nd_weakness',
       location: 'interview_room',
       narrations: [],
       dialogs: [
         {
           speaker: '翔太',
-          line: 'すみません、正確には私はサポートで、アイデア出しはチームメンバーが主体でした。私が自分でやったのは実装部分です',
+          line: '弱みは、主体的に動くことへの恐れです。就活をしてきて、自分がいかに「誰かについていく」ことで動いてきたかに気づきました。失敗が怖くて、引っ張られる側にいることで安心していた。インターンで初めてそこを抜け出した経験をして、今はそれを課題として意識しています',
         },
         {
-          speaker: '面接官',
-          inner: '（言い直せる誠実さはある。これは評価できる。ただ、何をしたかがまだ薄い）',
-          line: 'わかりました。その実装、もう少し教えてもらえますか',
+          speaker: '面接官A',
+          inner: '（この自己認識の深さ、珍しい。即戦力ではないが、伸びる。採りたい）',
+          line: '…それは、よく気づきましたね。ありがとうございます',
         },
       ],
       choices: [
         {
-          label: '実装の具体的な話をする',
-          nextSceneId: 'shota_deep_question',
+          label: '二次面接終了。結果を待つ',
+          nextSceneId: 'shota_2nd_result',
+          effects: [{ key: 'axis', delta: 15 }, { key: 'mental', delta: 8 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_2nd_safe',
+      location: 'interview_room',
+      narrations: [],
+      dialogs: [
+        {
+          speaker: '翔太',
+          line: '完璧主義なところです。細部にこだわりすぎることがあります',
+          inner: 'よく聞くやつ。でも本当のことじゃない。',
+        },
+        {
+          speaker: '面接官B',
+          inner: '（…テンプレだな。本音じゃない感じがする）',
+          line: 'なるほど。ありがとうございました',
+        },
+      ],
+      choices: [
+        {
+          label: '結果を待つ',
+          nextSceneId: 'shota_2nd_result',
+          effects: [{ key: 'stress', delta: 8 }],
+        },
+      ],
+    },
+
+    {
+      id: 'shota_2nd_result',
+      location: 'home',
+      narrations: [
+        '5月中旬。',
+        '4社の二次面接結果が出た。',
+        '2社通過、2社不合格。',
+        '通過した2社は、正直に弱みを話した面接だった。',
+        '不合格の2社は、無難な答えを並べた面接だった。',
+        '偶然かもしれない。でも翔太には、そうは思えなかった。',
+      ],
+      choices: [
+        {
+          label: '最終面接へ進む',
+          nextSceneId: 'shota_final_prep',
           effects: [{ key: 'axis', delta: 5 }, { key: 'mental', delta: 5 }],
         },
       ],
     },
 
-    {
-      id: 'shota_interview_fail',
-      location: 'interview_room',
-      narrations: [],
-      dialogs: [
-        {
-          speaker: '面接官',
-          line: 'ちなみに、使ったツールは何ですか？',
-          inner: '（ここで答えられなければ確定だな）',
-        },
-        {
-          speaker: '翔太',
-          line: '…えっと、Figmaとか…',
-        },
-        {
-          speaker: '面接官',
-          line: '（少し間を置いて）ありがとうございました。',
-          inner: '（うん、やっぱりやってない。次の人呼ぼう）',
-        },
-      ],
-      onEnter: [{ key: 'stress', delta: 20 }],
-      choices: [
-        {
-          label: '反省して次に臨む',
-          nextSceneId: 'shota_reflection',
-          effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: -10 }],
-        },
-      ],
-    },
+    // ── PHASE 6：6月 最終面接 ──
 
     {
-      id: 'shota_interview_pivot',
-      location: 'interview_room',
-      narrations: [],
-      dialogs: [
-        {
-          speaker: '翔太',
-          line: 'アイデア出しより、私がそこで学んだのは「チームで進める難しさ」です。自分の意見を持ちながら、全体の方向性を見失わないこと',
-          inner: 'これは本当のことだ。言い訳じゃない、はず。',
-        },
-        {
-          speaker: '面接官',
-          line: '（少し間を置いて）で、あなたが実際にやったことは何ですか？',
-          inner: '（逃げた。ちゃんと聞こう）',
-        },
-      ],
-      choices: [
-        {
-          label: '正直に「補佐役でした」と言う',
-          nextSceneId: 'shota_interview_honest',
-          effects: [{ key: 'axis', delta: 8 }],
-        },
-        {
-          label: 'また話を広げようとする',
-          nextSceneId: 'shota_interview_fail',
-          effects: [{ key: 'stress', delta: 15 }, { key: 'axis', delta: -10 }],
-        },
-      ],
-    },
-
-    {
-      id: 'shota_deep_question',
-      location: 'interview_room',
-      narrations: ['面接官が少し表情を変えた。'],
-      dialogs: [
-        {
-          speaker: '面接官',
-          line: '翔太さん、あなたが今まで「自分で」判断して動いた経験って、正直どれくらいありますか？',
-          inner: '（核心を聞こう。活動量はある。でも全部、誰かについていっただけじゃないか）',
-        },
-        {
-          speaker: '翔太',
-          line: '……',
-          inner: '長い沈黙。12個の活動が頭を流れた。学祭は先輩の指示で動いた。ハッカソンは渡辺くんが引っ張った。インターンは上司の指示通りにやった。ボランティアは事務局のスケジュール通りに動いた。俺は…ずっと誰かの後ろにいた。',
-        },
-      ],
-      choices: [
-        {
-          label: '「正直、自分で引っ張った経験は少ないです」と言う',
-          sub: 'そこから気づいたことを話す',
-          nextSceneId: 'shota_ending_a',
-          effects: [{ key: 'axis', delta: 20 }, { key: 'mental', delta: 5 }],
-        },
-        {
-          label: '「インターンでの〇〇はそうだったと思います」と絞り出す',
-          nextSceneId: 'shota_ending_b',
-          effects: [{ key: 'axis', delta: 10 }, { key: 'stress', delta: 5 }],
-        },
-        {
-          label: '「全部自分で動いてきました」と言い張る',
-          danger: true,
-          nextSceneId: 'shota_ending_d',
-          effects: [{ key: 'stress', delta: 20 }, { key: 'axis', delta: -20 }],
-        },
-      ],
-    },
-
-    {
-      id: 'shota_reflection',
+      id: 'shota_final_prep',
       location: 'cafe',
       narrations: [
-        '不合格の通知が来た。',
-        'カフェで、翔太は自分の過去の活動を一枚の紙に書き出した。',
-        '全部書き終えて、一つ一つに問いかけた。',
-        '「これ、俺が動かした？それとも、誰かについていっただけ？」',
-        '正直に答えていったら、「自分で動かした」と言えるのはほぼ0だった。',
+        '5月末。最終面接の前日。',
+        '翔太はノートを開いた。',
+        '「自分がやったこと」を一覧にした。',
+        '正直に数えると、12個の活動で自分が主体的に動いたのは2〜3個だった。',
+        '「それで十分か？」という問いに、翔太は向き合った。',
       ],
       dialogs: [
         {
           speaker: '翔太（心の声）',
-          line: '経験の量と深さは別物だった。俺は、浅いまま広げていただけだった。',
+          line: '十分じゃないかもしれない。でも、それが俺の今の現実だ。それを認めた上で、これからどうするかを話せるか。',
         },
       ],
       choices: [
         {
-          label: '次の面接に向けて向き合い直す',
-          nextSceneId: 'shota_deep_question',
-          effects: [{ key: 'axis', delta: 15 }, { key: 'mental', delta: 5 }],
+          label: '「これからどうするか」を軸に最終面接へ',
+          nextSceneId: 'shota_final_interview',
+          effects: [{ key: 'axis', delta: 15 }, { key: 'mental', delta: 8 }],
         },
       ],
     },
 
     {
-      id: 'shota_ending_a',
+      id: 'shota_final_interview',
       location: 'interview_room',
+      narrations: [
+        '最終面接。役員2名。',
+        '正直に話す。それだけ決めて入室した。',
+      ],
+      dialogs: [
+        {
+          speaker: '役員A',
+          line: '橘さん、率直に聞きます。これだけ多くの活動をしてきて、自信はありますか？',
+          inner: '（この子のESを見ると、量は多い。でも深さが気になる）',
+        },
+        {
+          speaker: '翔太',
+          line: '自信というより、反省が多いです。活動の量は多かったですが、ほとんどの場面で誰かについていくことで動いてきたと気づきました。でも、その気づきがあるから、入社後は意識的に変えられると思っています',
+        },
+        {
+          speaker: '役員B',
+          line: 'それは、どのタイミングで気づいたんですか？',
+          inner: '（自己認識が深い。これは珍しい候補者だ）',
+        },
+        {
+          speaker: '翔太',
+          line: '就活の自己分析の中でです。ESを書いていて、「自分が動かしたことって何だ？」と問い続けたら、ほとんどないことに気づきました。最初は怖かったです。でも、気づいたことで初めてスタートラインに立てた気がしました',
+        },
+        {
+          speaker: '役員A',
+          inner: '（…これは採る。この正直さと自己認識の深さは、本物だ）',
+          line: '最後に、入社してやりたいことを教えてください',
+        },
+        {
+          speaker: '翔太',
+          line: 'ユーザーの感情データを扱う仕事に興味があります。技術を使って人の気持ちを可視化すること。インターンで初めてそのアイデアを自分から出したとき、初めて「やった」と思えた。その感覚を、仕事で育てたいです',
+        },
+      ],
+      choices: [
+        {
+          label: '面接を終える',
+          nextSceneId: 'shota_ending_a',
+          effects: [{ key: 'axis', delta: 10 }, { key: 'mental', delta: 10 }],
+        },
+      ],
+    },
+
+    // ── ENDING ──
+
+    {
+      id: 'shota_ending_a',
+      location: 'home',
       isEnding: true,
       endingId: 'A',
       endingTitle: '深さを知った日',
       narrations: [
-        '「正直、ほとんど誰かの後ろにいました」',
-        '面接室に、静寂が流れた。',
-        '面接官はゆっくりとペンを置いた。',
-        '「正直に言えましたね」',
-        '内定は、出なかった。でも面接官は最後にこう言った。',
-        '「翔太さん、気づいたなら次はそこから始められますよ」',
-        '翔太は別の会社で内定をもらった。活動の数より、その一言を面接で話したことで。',
-        '経験の量と深さは別物だ。でも、気づけた人間は、次の深さに向かえる。',
+        '6月第1週。内定の連絡が来た。',
+        '翔太は少しだけ泣いた。理由は自分でもよくわからなかった。',
+        '',
+        '12個の活動。大半は誰かの後ろにいた。',
+        'それでも就活を通じて、初めて自分に正直になれた。',
+        '',
+        '就活が終わって、翔太はノートに書いた。',
+        '「経験の量と深さは別物だ」',
+        '「でも、浅さに気づいたなら、次は深くなれる」',
+        '',
+        '翔太の就活は、深さを知ることから始まった。',
       ],
       choices: [],
     },
@@ -408,28 +775,16 @@ export const shotaScenario: Scenario = {
       location: 'home',
       isEnding: true,
       endingId: 'B',
-      endingTitle: '一個の本物',
+      endingTitle: '1個の本物',
       narrations: [
-        'インターンでの一件を、翔太はなんとか話せた。',
-        '「あの時だけは、自分で判断した」',
-        '内定が出た。あの一個の経験が、ちゃんと伝わった。',
-        '12個より、1個の本物の方が強かった。',
-      ],
-      choices: [],
-    },
-
-    {
-      id: 'shota_ending_d',
-      location: 'home',
-      isEnding: true,
-      endingId: 'D',
-      endingTitle: 'ハリボテの王国',
-      narrations: [
-        '「全部自分で動きました」と言い張った。',
-        '面接官は最後まで無表情だった。',
-        '不合格のメールが翌日来た。',
-        '翔太は次の面接の準備をしながら、同じESを使い回した。',
-        '活動は12個。でもその重さは、まだ変わっていない。',
+        '2社から内定が出た。',
+        '翔太は、感情ログの提案を評価してくれた会社を選んだ。',
+        '',
+        '12個の活動の中の、たった1個の主体的な経験。',
+        'それが、翔太の就活を救った。',
+        '',
+        '量じゃなかった。',
+        '1個の本物が、あればよかった。',
       ],
       choices: [],
     },
