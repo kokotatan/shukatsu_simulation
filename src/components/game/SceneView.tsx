@@ -29,45 +29,57 @@ type Props = {
 
 export default function SceneView({ scene, onChoice, charColor }: Props) {
   const [narrationIndex, setNarrationIndex] = useState(0)
+  const [showDialogs, setShowDialogs] = useState(false)
   const [showChoices, setShowChoices] = useState(false)
-  const [showThought, setShowThought] = useState(false)
   const stats = useGameStore((s) => s.stats)
 
+  // シーン切り替え時にリセット
   useEffect(() => {
     setNarrationIndex(0)
+    setShowDialogs(false)
     setShowChoices(false)
-    setShowThought(false)
-  }, [scene.id])
+
+    // narrations が空のシーンはすぐにダイアログ・選択肢を表示
+    if (scene.narrations.length === 0) {
+      setShowDialogs(true)
+      setTimeout(() => setShowChoices(true), 200)
+    }
+  }, [scene.id, scene.narrations.length])
+
+  const proceedAfterNarrations = useCallback(() => {
+    if (scene.dialogs && scene.dialogs.length > 0) {
+      setShowDialogs(true)
+      setTimeout(() => setShowChoices(true), 400)
+    } else {
+      setTimeout(() => setShowChoices(true), 200)
+    }
+  }, [scene.dialogs])
 
   const handleNarrationComplete = useCallback(() => {
     if (narrationIndex < scene.narrations.length - 1) {
-      // 次のナレーションへ少し待ってから進む
-      setTimeout(() => setNarrationIndex((i) => i + 1), 400)
-    } else if (scene.dialogs && scene.dialogs.length > 0) {
-      setShowThought(true)
-      setTimeout(() => setShowChoices(true), 300)
+      setTimeout(() => setNarrationIndex((i) => i + 1), 350)
     } else {
-      setTimeout(() => setShowChoices(true), 300)
+      proceedAfterNarrations()
     }
-  }, [narrationIndex, scene.narrations.length, scene.dialogs])
+  }, [narrationIndex, scene.narrations.length, proceedAfterNarrations])
 
   const skip = useCallback(() => {
-    setNarrationIndex(scene.narrations.length - 1)
+    if (showChoices) return
+    setNarrationIndex(scene.narrations.length > 0 ? scene.narrations.length - 1 : 0)
+    setShowDialogs(true)
     setShowChoices(true)
-  }, [scene.narrations.length])
+  }, [showChoices, scene.narrations.length])
 
   return (
     <div
       className="min-h-screen flex flex-col"
       style={{ '--char-color': charColor } as React.CSSProperties}
     >
-      {/* ヘッダー：ロケーション + ステータス */}
+      {/* ヘッダー */}
       <header className="flex items-start justify-between px-4 pt-4 pb-2 border-b border-bg-border">
-        <div>
-          <span className="text-xs text-cream-muted">
-            [ {LOCATION_LABELS[scene.location] ?? scene.location} ]
-          </span>
-        </div>
+        <span className="text-xs text-cream-muted">
+          [ {LOCATION_LABELS[scene.location] ?? scene.location} ]
+        </span>
         <div className="flex flex-col gap-1 w-40">
           <StatBar label="スト" value={stats.stress} reverse color="#e05050" />
           <StatBar label="精神" value={stats.mental} />
@@ -76,37 +88,39 @@ export default function SceneView({ scene, onChoice, charColor }: Props) {
       </header>
 
       {/* メインコンテンツ */}
-      <main className="flex-1 flex flex-col px-4 md:px-8 max-w-2xl mx-auto w-full py-8 gap-6">
+      <main
+        className="flex-1 flex flex-col px-4 md:px-8 max-w-2xl mx-auto w-full py-8 gap-6 cursor-pointer"
+        onClick={skip}
+      >
+        {/* 表示済みナレーション（薄く） */}
+        {scene.narrations.slice(0, narrationIndex).map((text, i) => (
+          <p key={i} className="font-serif-jp text-sm md:text-base leading-loose text-cream-muted">
+            {text}
+          </p>
+        ))}
 
-        {/* ナレーション */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`narration-${narrationIndex}`}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-2 cursor-pointer"
-            onClick={skip}
-          >
-            {scene.narrations.slice(0, narrationIndex).map((text, i) => (
-              <p key={i} className="font-serif-jp text-cream text-sm md:text-base leading-loose text-cream-dim">
-                {text}
-              </p>
-            ))}
-            {scene.narrations[narrationIndex] && (
-              <p className="font-serif-jp text-cream text-sm md:text-base leading-loose">
-                <TypeWriter
-                  text={scene.narrations[narrationIndex]}
-                  speed={35}
-                  onComplete={handleNarrationComplete}
-                />
-              </p>
-            )}
-          </motion.div>
-        </AnimatePresence>
+        {/* 現在のナレーション（タイプライター） */}
+        {scene.narrations.length > 0 && !showChoices && scene.narrations[narrationIndex] && (
+          <p className="font-serif-jp text-cream text-sm md:text-base leading-loose">
+            <TypeWriter
+              key={`${scene.id}-${narrationIndex}`}
+              text={scene.narrations[narrationIndex]}
+              speed={35}
+              onComplete={handleNarrationComplete}
+            />
+          </p>
+        )}
+
+        {/* 全ナレーション表示済み後に最後のナレーションをフル表示 */}
+        {showChoices && scene.narrations.length > 0 && (
+          <p className="font-serif-jp text-sm md:text-base leading-loose text-cream-muted">
+            {scene.narrations[scene.narrations.length - 1]}
+          </p>
+        )}
 
         {/* ダイアログ */}
         <AnimatePresence>
-          {showThought && scene.dialogs && (
+          {showDialogs && scene.dialogs && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -117,38 +131,32 @@ export default function SceneView({ scene, onChoice, charColor }: Props) {
                   key={i}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.15 }}
+                  transition={{ delay: i * 0.12 }}
                   className="border border-bg-border bg-bg-card p-3"
                 >
-                  <div className="flex items-baseline gap-2 mb-1">
-                    <span
-                      className="text-xs font-dot"
-                      style={{ color: charColor }}
-                    >
-                      {dialog.speaker}
-                    </span>
-                  </div>
+                  <p className="text-xs font-dot mb-1" style={{ color: charColor }}>
+                    {dialog.speaker}
+                  </p>
                   <p className="font-serif-jp text-cream text-sm leading-relaxed">
                     「{dialog.line}」
                   </p>
                   {dialog.inner && (
-                    <p className="text-xs text-cream-muted mt-1.5 font-dot italic">
+                    <p className="text-xs text-cream-muted mt-1.5 font-dot">
                       ─ {dialog.inner}
                     </p>
                   )}
                 </motion.div>
               ))}
 
-              {/* 面接官の本音 */}
               {scene.interviewerThought && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: (scene.dialogs?.length ?? 0) * 0.15 + 0.3 }}
-                  className="border border-dashed border-cream-muted/30 p-3 bg-bg"
+                  transition={{ delay: (scene.dialogs?.length ?? 0) * 0.12 + 0.2 }}
+                  className="border border-dashed border-cream-muted/30 p-3"
                 >
                   <p className="text-xs text-cream-muted font-dot">
-                    <span className="text-gold text-xs">【面接官の本音】</span>
+                    <span className="text-gold">【面接官の本音】</span>
                     <br />
                     {scene.interviewerThought}
                   </p>
@@ -162,9 +170,9 @@ export default function SceneView({ scene, onChoice, charColor }: Props) {
         <AnimatePresence>
           {showChoices && scene.choices.length > 0 && (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-2 mt-4"
+              className="space-y-2 mt-2"
             >
               <p className="text-xs text-cream-muted mb-3">─ どうする？</p>
               {scene.choices.map((choice, i) => (
@@ -172,33 +180,27 @@ export default function SceneView({ scene, onChoice, charColor }: Props) {
                   key={i}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  className={`choice-btn w-full text-left px-4 py-3 border border-bg-border
-                              text-cream text-sm transition-colors duration-150
-                              ${choice.danger ? 'hover:border-emotion-stress hover:text-emotion-stress' : ''}`}
-                  onClick={() => onChoice(choice.nextSceneId, choice.effects, choice.cost)}
-                  style={{
-                    '--char-color': charColor,
-                  } as React.CSSProperties}
+                  transition={{ delay: i * 0.07 }}
+                  className="w-full text-left px-4 py-3 border border-bg-border text-cream text-sm transition-colors duration-150 font-dot"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onChoice(choice.nextSceneId, choice.effects, choice.cost)
+                  }}
                   onMouseEnter={(e) => {
-                    if (!choice.danger) {
-                      e.currentTarget.style.borderColor = charColor
-                      e.currentTarget.style.color = charColor
-                    }
+                    e.currentTarget.style.borderColor = choice.danger ? '#e05050' : charColor
+                    e.currentTarget.style.color = choice.danger ? '#e05050' : charColor
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = ''
                     e.currentTarget.style.color = ''
                   }}
                 >
-                  <span className="font-dot">▶ {choice.label}</span>
+                  ▶ {choice.label}
                   {choice.sub && (
-                    <span className="block text-xs text-cream-muted mt-0.5 font-dot">
-                      　{choice.sub}
-                    </span>
+                    <span className="block text-xs text-cream-muted mt-0.5">　{choice.sub}</span>
                   )}
                   {choice.cost && (
-                    <span className="block text-xs text-emotion-absurdity mt-0.5 font-dot">
+                    <span className="block text-xs text-emotion-absurdity mt-0.5">
                       　(-¥{choice.cost.toLocaleString()})
                     </span>
                   )}
@@ -209,7 +211,6 @@ export default function SceneView({ scene, onChoice, charColor }: Props) {
         </AnimatePresence>
       </main>
 
-      {/* スキップヒント */}
       {!showChoices && (
         <p className="text-center text-cream-muted text-xs pb-4 animate-blink">
           タップで進む
