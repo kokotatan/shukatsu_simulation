@@ -25,19 +25,29 @@ export default function GamePage({ params }: { params: Promise<{ charId: string 
   const char = getCharacter(charIdParam)
   const scene = getScene()
 
-  // ゲームが初期化されていない場合はリダイレクト
+  // ゲームが初期化されていない場合はリダイレクト（ending中は除く）
   useEffect(() => {
-    if (!charId || charId !== charIdParam || phase !== 'playing') {
+    if (!charId || charId !== charIdParam || (phase !== 'playing' && phase !== 'ending')) {
       router.replace('/select')
     }
   }, [charId, charIdParam, phase, router])
 
-  // シーン進入時エフェクト
+  // シーン進入時の自動エフェクト
   useEffect(() => {
     if (scene?.onEnter) {
       applyStatEffects(scene.onEnter)
     }
   }, [scene?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // エンディングシーン検知 → setEnding → 3秒後に遷移
+  useEffect(() => {
+    if (!scene?.isEnding || !scene?.endingId) return
+    setEnding(scene.endingId, scene.endingTitle ?? '')
+    const timer = setTimeout(() => {
+      router.push(`/ending/${charIdParam}`)
+    }, 3500)
+    return () => clearTimeout(timer)
+  }, [scene?.id, scene?.isEnding, scene?.endingId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!char || !scenario || !scene) return null
 
@@ -47,22 +57,9 @@ export default function GamePage({ params }: { params: Promise<{ charId: string 
     cost?: number
   ) => {
     const allEffects: StatEffect[] = [...effects]
-    if (cost) {
-      allEffects.push({ key: 'money', delta: -cost })
-    }
+    if (cost) allEffects.push({ key: 'money', delta: -cost })
     goToScene(nextSceneId, allEffects)
   }
-
-  // エンディングシーンへの遷移
-  useEffect(() => {
-    if (scene.isEnding && scene.endingId) {
-      setEnding(scene.endingId, scene.endingTitle ?? '')
-      const timer = setTimeout(() => {
-        router.push(`/ending/${charIdParam}`)
-      }, 3000)
-      return () => clearTimeout(timer)
-    }
-  }, [scene.isEnding, scene.endingId, scene.endingTitle, charIdParam, router, setEnding])
 
   return (
     <div className={`char-${charIdParam}`}>
@@ -75,27 +72,27 @@ export default function GamePage({ params }: { params: Promise<{ charId: string 
           transition={{ duration: 0.25 }}
         >
           {scene.isEnding ? (
+            // エンディング演出
             <div className="min-h-screen flex flex-col items-center justify-center px-4 gap-8">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="text-center space-y-4 max-w-md"
+                transition={{ delay: 0.3 }}
+                className="text-center space-y-6 max-w-md w-full"
               >
-                <p className="text-cream-muted text-xs tracking-widest">ENDING {scene.endingId}</p>
-                <h2
-                  className="text-xl font-dot"
-                  style={{ color: char.themeColor }}
-                >
+                <p className="text-cream-muted text-xs tracking-widest">
+                  ENDING {scene.endingId}
+                </p>
+                <h2 className="text-xl font-dot" style={{ color: char.themeColor }}>
                   {scene.endingTitle}
                 </h2>
-                <div className="space-y-3 text-left">
+                <div className="space-y-4 text-left">
                   {scene.narrations.map((text, i) => (
                     <motion.p
                       key={i}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8 + i * 0.4 }}
+                      transition={{ delay: 0.5 + i * 0.5 }}
                       className="font-serif-jp text-cream text-sm leading-loose"
                     >
                       {text}
@@ -106,10 +103,10 @@ export default function GamePage({ params }: { params: Promise<{ charId: string 
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: scene.narrations.length * 0.4 + 1 }}
+                transition={{ delay: 0.5 + scene.narrations.length * 0.5 + 0.5 }}
                 className="text-cream-muted text-xs animate-blink"
               >
-                結果画面へ移動中…
+                結果画面へ…
               </motion.p>
             </div>
           ) : (

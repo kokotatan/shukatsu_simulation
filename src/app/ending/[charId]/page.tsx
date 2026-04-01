@@ -26,9 +26,13 @@ export default function EndingPage({ params }: { params: Promise<{ charId: strin
     .find((r) => r.charId === charIdParam)
 
   useEffect(() => {
-    if (phase !== 'ending' || !latestRecord) {
-      router.replace('/')
-    }
+    // 少し待ってからチェック（ストアの反映を待つ）
+    const timer = setTimeout(() => {
+      if (phase !== 'ending' || !latestRecord) {
+        router.replace('/')
+      }
+    }, 500)
+    return () => clearTimeout(timer)
   }, [phase, latestRecord, router])
 
   if (!char || !latestRecord) return null
